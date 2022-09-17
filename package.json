@@ -1,0 +1,46 @@
+{
+  "name": "modelshop",
+  "version": "1.0.0",
+  "description": "A shop seeling car, boats and airplanes models",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "npm run client:build",
+    "client:dev": "react-scripts start",
+    "client:build": "react-scripts build",
+    "server:dev": "nodemon index.js",
+    "db:build": "node ./db/init_db",
+    "start:dev": "concurrently \"npm run client:build\" \"npm run client:dev\" \"npm run server:dev\"",
+    "start": "node index.js",
+    "test": "jest --runInBand"
+  },
+  "keywords": [],
+  "author": "Konrad Tadeusz Budny",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "bcrypt": "^5.0.1",
+    "concurrently": "^7.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "morgan": "^1.10.0",
+    "pg": "^8.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.0",
+    "react-scripts": "^5.0.1"
+  },
+  "proxy": "http://localhost:9000",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
