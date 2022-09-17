@@ -59,7 +59,7 @@ async function deleteItem(id) {
         throw error;
     }
 }
-module.exports={
+module.exports = {
     createItem,
     getAllItems,
     getItemById,

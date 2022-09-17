@@ -20,7 +20,6 @@ server.use((req, res, next) => {
 
 const { client } = require('./db/client');
 
-const PORT = process.env.PORT || 9000;
 
 const handle = server.listen(PORT, async () => {
     console.log(`Server is running on ${PORT}!`);
