@@ -14,7 +14,7 @@ if (process.env.CI) {
         password: 'postgres',
         database: 'postgres',
         idleTimeoutMillis: 0,
-  connectionTimeoutMillis: 0,
+        connectionTimeoutMillis: 0
     });
 } else {
     client = new Client(DB_URL);

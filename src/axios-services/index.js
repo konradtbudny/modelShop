@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseURL="http://localhost:4000/api"
+const baseURL = "http://localhost:4000/api"
 
 /* 
   export async function getUsers() {
@@ -13,11 +13,11 @@ const baseURL="http://localhost:4000/api"
 */
 
 export async function getAPIHealth() {
-    try {
-        const { data } = await axios.get(`${baseURL}/health`);
-        return data;
-    } catch (err) {
-        console.error(err);
-        return { healthy: false };
-    }
+  try {
+    const { data } = await axios.get(`${baseURL}/health`);
+    return data;
+  } catch (err) {
+    console.error(err);
+    return { healthy: false };
+  }
 }
