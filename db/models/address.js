@@ -1,12 +1,12 @@
 const { client } = require("../client");
 
-async function createAddress({ street, city, state, zipCode, country }) {
+async function createAddress({ userId, addressItemId, isDefault }) {
     try {
         const { rows: [address] } = await client.query(`
-        INSERT INTO addresses(street, city,state,zipCode,country)
+        INSERT INTO addresses("userId","addressItemId",isDefault)
         VALUES($1,$2,$3,$4,$5)
-        RETURNING *;
-        `, [street, city, state, zipCode, country]);
+        ON CONFLICT ("userId,"addressItemId") DO NOTHING
+        RETURNING *;`, [userId, addressItemId, isDefault]);
         return address;
     } catch (error) {
         throw error;
@@ -14,15 +14,33 @@ async function createAddress({ street, city, state, zipCode, country }) {
 }
 async function getAddressById(id) {
     try {
-        const { rows: [address] } = await client.query(`SELECT * FROM addresses WHERE id=$1`, [id]);
+        const { rows: [address] } = await client.query(`
+        SELECT * FROM addresses
+        WHERE id=$1
+        RETURNING *;`, [id]);
         return address;
     } catch (error) {
         throw error
     }
 }
-async function deleteAddress(id) {
+async function getAddressByUserId(userId) {
     try {
-        const { rows: [address] } = await client.query(`DELETE * FROM addresses WHERE id=$1`, [id])
+        const { rows: [address] } = await client.query(`
+        SELECT * FROM addresses
+        WHERE "userId"=$1
+        RETURNING *;`, [userId]);
+        return address;
+    } catch (error) {
+        throw error
+    }
+}
+async function deleteAddress(addressItemId, userId) {
+    try {
+        const { rows: [address] } = await client.query(`
+        DELETE * FROM addresses
+        WHERE "addressItemId"=$1 AND "userId"=$2
+        RETURNING *;`, [addressItemId, userId]);
+        return address;
     } catch (error) {
         throw error;
     }
@@ -30,5 +48,6 @@ async function deleteAddress(id) {
 module.exports = {
     createAddress,
     getAddressById,
+    getAddressByUserId,
     deleteAddress
 }

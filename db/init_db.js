@@ -46,7 +46,7 @@ async function buildTables() {
                 email varchar(255) NOT NULL,
                 contactNumber varchar(255),
                 type varchar(255) NOT NULL,
-                UNIQUE (id, "address_id")
+                UNIQUE (id, "addressId")
             )`);
         console.log("\nFinished creating tables.");
     } catch (error) {

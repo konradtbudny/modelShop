@@ -15,7 +15,9 @@ async function createItem({ name, description, price, amount, category, picture 
 }
 async function getAllItems() {
     try {
-        const { rows: [item] } = await client.query(`SELECT * FROM items;`);
+        const { rows: [item] } = await client.query(`
+        SELECT * FROM items
+        RETURNING *;`);
         return rows;
     } catch (error) {
         throw error;
@@ -23,7 +25,10 @@ async function getAllItems() {
 }
 async function getItemById(id) {
     try {
-        const { rows: [item] } = await client.query(`SELECT * FROM items WHERE id=$1;`, [id]);
+        const { rows: [item] } = await client.query(`
+        SELECT * FROM items
+        WHERE id=$1
+        RETURNING *;`, [id]);
         return item;
     } catch (error) {
         throw error;
@@ -42,8 +47,7 @@ async function updateItem({ id, name, description, price, amount, category, pict
         UPDATE items
         SET name=$1, description=$2, price=$3, amount=$4,category=$5,picture=$6
         WHERE id=$7
-        RETURNING *;
-        `, [name, description, price, amount, category, picture, id]);
+        RETURNING *;`, [name, description, price, amount, category, picture, id]);
         return item;
 
     } catch (error) {
@@ -53,8 +57,9 @@ async function updateItem({ id, name, description, price, amount, category, pict
 async function deleteItem(id) {
     try {
         const { rows: [item] } = await client.query(`
-        DELETE FROM items WHERE id=$1 RETURNING*;
-        `, [id]);
+        DELETE FROM items
+        WHERE id=$1
+        RETURNING*;`, [id]);
     } catch (error) {
         throw error;
     }
