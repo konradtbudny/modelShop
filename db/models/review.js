@@ -12,6 +12,7 @@ async function createReview({ userId, itemId, description }) {
         throw error;
     }
 }
+
 async function getReviewById(id) {
     try {
         const { rows: [review] } = await client.query(`
@@ -23,6 +24,7 @@ async function getReviewById(id) {
         throw error;
     }
 }
+
 async function getReviewByUserId(userId) {
     try {
         const { rows: [reviews] } = await client.query(`
@@ -34,6 +36,7 @@ async function getReviewByUserId(userId) {
         throw error;
     }
 }
+
 async function getAllReviews() {
     try {
         const { rows: [reviews] } = await client.query(`
@@ -44,6 +47,7 @@ async function getAllReviews() {
         throw error;
     }
 }
+
 async function updateReview({ id, userId, description }) {
     try {
         let temp = await getReviewById(id);
@@ -59,6 +63,7 @@ async function updateReview({ id, userId, description }) {
         throw error;
     }
 }
+
 async function deleteReview(id) {
     try {
         const { rows: [review] } = await client.query(`

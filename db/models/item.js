@@ -1,18 +1,18 @@
 const { client } = require("../client");
-//image
+
 async function createItem({ name, description, price, amount, category, picture }) {
     try {
         const { rows: [item] } = await client.query(`
-    INSERT INTO items(name, description, price, amount,category,picture)
-    VALUES($1,$2,$3,$4,$5,$6)
-    ON CONFLICT (name) DO NOTHING
-    RETURNING *;`,
-            [name, description, price, amount, category, picture]);
+        INSERT INTO items(name, description, price, amount,category,picture)
+        VALUES($1,$2,$3,$4,$5,$6)
+        ON CONFLICT (name) DO NOTHING
+        RETURNING *;`, [name, description, price, amount, category, picture]);
         return item;
     } catch (error) {
         throw error
     }
 }
+
 async function getAllItems() {
     try {
         const { rows: [item] } = await client.query(`
@@ -23,6 +23,7 @@ async function getAllItems() {
         throw error;
     }
 }
+
 async function getItemById(id) {
     try {
         const { rows: [item] } = await client.query(`
@@ -34,6 +35,7 @@ async function getItemById(id) {
         throw error;
     }
 }
+
 async function updateItem({ id, name, description, price, amount, category, picture }) {
     try {
         const temp = await getItemById(id);
@@ -49,11 +51,11 @@ async function updateItem({ id, name, description, price, amount, category, pict
         WHERE id=$7
         RETURNING *;`, [name, description, price, amount, category, picture, id]);
         return item;
-
     } catch (error) {
         throw error;
     }
 }
+
 async function deleteItem(id) {
     try {
         const { rows: [item] } = await client.query(`
@@ -64,6 +66,7 @@ async function deleteItem(id) {
         throw error;
     }
 }
+
 module.exports = {
     createItem,
     getAllItems,

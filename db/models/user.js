@@ -7,13 +7,8 @@ function removePassword(user) {
     delete user.hashedPassword;
     return user;
 }
-function changeAddress(user) {
-    //Switches address Id to to whole address
-    user.address = getAddressById(user.addressId);
-    delete user.addressId;
-    return user;
-}
-async function createUser({ firstName, lastName, password, email, contactNumber, type, addressId }) {
+
+async function createUser({ firstName, lastName, password, email, contactNumber, type }) {
     try {
         const SALT_COUNT = 10;
         const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
@@ -21,14 +16,14 @@ async function createUser({ firstName, lastName, password, email, contactNumber,
         INSERT INTO users(firstName, lastName,password,email,contactNumber,type, addressId)
         VALUES($1,$2,$3,$4,$5,$6,$7)
         ON CONFLICT (firstName, lastName) DO NOTHING
-        RETURNING *;`, [firstName, lastName, hashedPassword, email, contactNumber, type, addressId]);
+        RETURNING *;`, [firstName, lastName, hashedPassword, email, contactNumber, type]);
         user = removePassword(user);
-        user = changeAddress(user);
         return user;
     } catch (error) {
         throw error;
     }
 }
+
 async function getUserByName({ firstName, lastName }) {
     try {
         const { rows: [user] } = await client.query(`
@@ -39,12 +34,12 @@ async function getUserByName({ firstName, lastName }) {
             return null;
         }
         user = removePassword(user);
-        user = changeAddress(user);
         return user;
     } catch (error) {
         throw error;
     }
 }
+
 async function getUserById(id) {
     try {
         const { rows: [user] } = await client.query(`'
@@ -52,19 +47,18 @@ async function getUserById(id) {
         WHERE ID=$1
         RETURNING *;`, [id]);
         user = removePassword(user);
-        user = changeAddress(user);
         return user;
     } catch (error) {
         throw error;
     }
 }
+
 async function getUser({ firstName, lastName, password }) {
     try {
         let user = await getUserByName(firstName, lastName);
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (passwordMatch) {
             user = removePassword(user);
-            user = changeAddress(user);
             return user;
         }
         else {
@@ -74,19 +68,19 @@ async function getUser({ firstName, lastName, password }) {
         throw error;
     }
 }
+
 async function getAllUsers() {
     try {
         const { rows: [user] } = await client.query(`
         SELECT * FROM users
-        RETURNING *;
-        `)
+        RETURNING *;`)
         user = removePassword(user);
-        user = changeAddress(user);
         return user;
     } catch (error) {
         throw error;
     }
 }
+
 async function deleteUser({ firstName, lastName, email }) {
     try {
         const { rows: [user] } = await client.query(`
@@ -98,6 +92,7 @@ async function deleteUser({ firstName, lastName, email }) {
         throw error;
     }
 }
+
 module.exports = {
     createUser,
     getUserByName,

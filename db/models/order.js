@@ -12,6 +12,7 @@ async function createOrder(userId, addressId, active) {
         throw error;
     }
 }
+
 async function getAllOrders() {
     try {
         const { rows: [orders] } = await client.query(`
@@ -34,6 +35,7 @@ async function getOrderById(id) {
         throw error;
     }
 }
+
 async function getOrderByUserId(userId) {
     try {
         const { rows: [order] } = await client.query(`
@@ -45,6 +47,7 @@ async function getOrderByUserId(userId) {
         throw error;
     }
 }
+
 async function updateOrder({ id, addressId, active }) {
     try {
         let temp = await getOrderById(id);
@@ -59,6 +62,7 @@ async function updateOrder({ id, addressId, active }) {
         throw error;
     }
 }
+
 async function deleteOrder(id) {
     try {
         const { rows: [order] } = await client.query(`

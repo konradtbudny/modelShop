@@ -11,6 +11,7 @@ async function createAddressItem({ street, city, state, zipCode, country }) {
         throw error;
     }
 }
+
 async function getAddressItemById(id) {
     try {
         const { rows: [address] } = await client.query(`
@@ -22,6 +23,7 @@ async function getAddressItemById(id) {
         throw error
     }
 }
+
 async function deleteAddressItem(id) {
     try {
         const { rows: [address] } = await client.query(`
@@ -33,6 +35,7 @@ async function deleteAddressItem(id) {
         throw error;
     }
 }
+
 module.exports = {
     createAddressItem,
     getAddressItemById,

@@ -1,9 +1,9 @@
 const { client } = require("../client");
 
-async function createAddress({ userId, addressItemId, isDefault }) {
+async function createAddress({ userId, addressItemId }) {
     try {
         const { rows: [address] } = await client.query(`
-        INSERT INTO addresses("userId","addressItemId",isDefault)
+        INSERT INTO addresses("userId","addressItemId")
         VALUES($1,$2,$3,$4,$5)
         ON CONFLICT ("userId,"addressItemId") DO NOTHING
         RETURNING *;`, [userId, addressItemId, isDefault]);
@@ -12,6 +12,7 @@ async function createAddress({ userId, addressItemId, isDefault }) {
         throw error;
     }
 }
+
 async function getAddressById(id) {
     try {
         const { rows: [address] } = await client.query(`
@@ -23,6 +24,7 @@ async function getAddressById(id) {
         throw error
     }
 }
+
 async function getAddressByUserId(userId) {
     try {
         const { rows: [address] } = await client.query(`
@@ -34,6 +36,7 @@ async function getAddressByUserId(userId) {
         throw error
     }
 }
+
 async function deleteAddress(addressItemId, userId) {
     try {
         const { rows: [address] } = await client.query(`
@@ -45,6 +48,7 @@ async function deleteAddress(addressItemId, userId) {
         throw error;
     }
 }
+
 module.exports = {
     createAddress,
     getAddressById,

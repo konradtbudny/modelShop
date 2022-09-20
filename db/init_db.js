@@ -7,9 +7,13 @@ async function dropTables() {
     try {
         console.log("Dropping ALL Tables...");
         await client.query(`
+        DROP TABLE IF EXISTS reviews;
+        DROP TABLE IF EXISTS orderItems;
         DROP TABLE IF EXISTS items;
+        DROP TABLE IF EXISTS addresses;
+        DROP TABLE IF EXISTS orders;
+        DROP TABLE IF EXISTS addressItems;
         DROP TABLE IF EXISTS users;
-        DROP TABLE IF EXISTS addresses CASCADE;
         `);
         console.log("\nFinished dropping tables.");
     } catch (error) {
@@ -21,49 +25,66 @@ async function dropTables() {
 async function buildTables() {
     try {
         console.log("\nCreating Tables...");
+        await client.query(`CREATE TABLE addressItems(
+            id SERIAL PRIMARY KEY,
+            street varchar(255) NOT NULL,
+            city varchar(255) NOT NULL,
+            state varchar(255) NOT NULL,
+            zipCode varchar(255) NOT NULL,
+            country varchar(255) NOT NULL
+        )`);
+
         await client.query(`CREATE TABLE items(
             id SERIAL PRIMARY KEY,
             name varchar(255) UNIQUE NOT NULL,
             description varchar(255) NOT NULL,
             price DECIMAL(12,2) NOT NULL CHECK (price>0.00),
-            amount INTEGER CHECK (amount >=0),
+            amount INTEGER NOT NULL CHECK (amount >=0),
             category varchar(255) NOT NULL,
-            picture varchar(255)
+            picture varchar(255) NOT NULL
             )`);
-        await client.query(`CREATE TABLE addresses(
-                id SERIAL PRIMARY KEY,
-                street varchar(255) NOT NULL,
-                city varchar(255) NOT NULL,
-                state varchar(255) NOT NULL,
-                zipCode varchar(255) NOT NULL,
-                country varchar(255) NOT NULL
-            )`);
+
         await client.query(`CREATE TABLE users(
-                id SERIAL PRIMARY KEY,
-                "address_id" INTEGER REFERENCES addresses(id),
-                username varchar(255) UNIQUE NOT NULL,
-                password varchar(255) NOT NULL,
-                email varchar(255) NOT NULL,
-                contactNumber varchar(255),
-                type varchar(255) NOT NULL,
-                UNIQUE (id, "addressId")
+            id SERIAL PRIMARY KEY,
+            firstName varchar(255) NOT NULL,
+            lastName varchar(255) NOT NULL,
+            password varchar(255) NOT NULL,
+            email varchar(255) UNIQUE NOT NULL,
+            contactNumber varchar(255),
+            type varchar(255) NOT NULL
+            )`);
+
+        await client.query(`CREATE TABLE addresses(
+            id SERIAL PRIMARY KEY,
+            "userId" INTEGER REFERENCES users(id),
+            "addressItemId" INTEGER REFERENCES addressItems(id),
+            isDefault BOOLEAN DEFAULT false NOT NULL
+        )`);
+
+        await client.query(`CREATE TABLE orders(
+            id SERIAL PRIMARY KEY,
+            "userId" INTEGER REFERENCES users(id),
+            "addressId" INTEGER REFERENCES addressItems(id),
+            active BOOLEAN DEFAULT false
+        )`);
+
+        await client.query(`CREATE TABLE orderItems(
+            id SERIAL PRIMARY KEY,
+            "orderId" INTEGER REFERENCES orders(id),
+            "itemId" INTEGER REFERENCES items(id),
+            price INTEGER NOT NULL,
+            quantity INTEGER NOT NULL
+            )`);
+
+        await client.query(`CREATE TABLE reviews(
+            id SERIAL PRIMARY KEY,
+            "userId" INTEGER REFERENCES users(id),
+            "itemId" INTEGER REFERENCES items(id),
+            description varchar(256)
             )`);
         console.log("\nFinished creating tables.");
     } catch (error) {
         console.log("\nEror with building tables!");
-        throw error;
-    }
-}
-
-async function populateInitialData() {
-    try {
-        console.log("\nPopulating data...");
-        const address1 = await createAddress({ street: "9203 Summerdale St Apt. 2", city: "Chicago", state: "IL", zipCode: "92043", country: "USA" });
-        const user1 = await createUser({ username: "Kondziorek", password: "Hello World!", email: "kbudny492@gmail.com", contactNumber: "+17758426914", type: "Admin", addressId: 1 });
-        const item1 = await createItem({ name: "Dodge Challanger 1969", description: "Iconinc car in scale 1:69", price: 211.43, amount: 2, category: "car", picture: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/64/1971_Dodge_Challenger_R-T_%285150571732%29.jpg/200px-1971_Dodge_Challenger_R-T_%285150571732%29.jpg" });
-        console.log("\nFinished Populating data.")
-    } catch (error) {
-        console.log("\nError with populating data!")
         throw error;
     }
 }
@@ -73,7 +94,7 @@ async function rebuildTables() {
         client.connect();
         await dropTables();
         await buildTables();
-        await populateInitialData();
+        //await populateInitialData();
     } catch (error) {
         throw error
     }
