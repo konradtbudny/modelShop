@@ -5,7 +5,6 @@ async function createOrderItem({ orderId, itemId, price, quantity }) {
         const { rows: [orderItem] } = await client.query(`
         INSERT INTO orderItems("orderId","itemId",price,quantity)
         VALUES($1,$2,$3,$4)
-        ON CONFLICT ("orderId","itemId") DO NOTHING
         RETURNING *;`, [orderId, itemId, price, quantity]);
         return orderItem;
     } catch (error) {

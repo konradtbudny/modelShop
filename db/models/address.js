@@ -4,9 +4,8 @@ async function createAddress({ userId, addressItemId }) {
     try {
         const { rows: [address] } = await client.query(`
         INSERT INTO addresses("userId","addressItemId")
-        VALUES($1,$2,$3,$4,$5)
-        ON CONFLICT ("userId,"addressItemId") DO NOTHING
-        RETURNING *;`, [userId, addressItemId, isDefault]);
+        VALUES($1,$2)
+        RETURNING *;`, [userId, addressItemId]);
         return address;
     } catch (error) {
         throw error;

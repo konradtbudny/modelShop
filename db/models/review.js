@@ -5,7 +5,6 @@ async function createReview({ userId, itemId, description }) {
         const { rows: [review] } = await client.query(`
         INSERT INTO reviews("userId","itemId",description)
         VALUES($1,$2,$3)
-        ON CONFLICT ("userId", "itemId") DO NOTHING
         RETURNING *;`, [userId, itemId, description]);
         return review;
     } catch (error) {

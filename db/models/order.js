@@ -1,12 +1,11 @@
 const { client } = require("../client");
 
-async function createOrder(userId, addressId, active) {
-    active = active ? active : false;
+async function createOrder(userId, addressId) {
     try {
         const { rows: [order] } = await client.query(`
-        INSERT INTO orders("userId","addressId",active)
-        VALUES($1,$2,$3)
-        RETURNING *;`, [userId, addressId, active]);
+        INSERT INTO orders("userId","addressId")
+        VALUES($1,$2)
+        RETURNING *;`, [userId, addressId]);
         return order;
     } catch (error) {
         throw error;
@@ -55,7 +54,7 @@ async function updateOrder({ id, addressId, active }) {
         active = active ? active : temp.active;
         const { rows: [order] } = await client.query(`
         UPDATE orders
-        SET "addressId=$1, active=$2
+        SET "addressId"=$1, active=$2
         WHERE id=$3
         RETURNING *;`, [addressId, active, id])
     } catch (error) {
