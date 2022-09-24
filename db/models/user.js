@@ -1,6 +1,5 @@
 const { client } = require('../client');
 const bcrypt = require("bcrypt");
-const { getAddressById } = require("./address");
 
 function removePassword(user) {
     delete user.password;
@@ -24,15 +23,28 @@ async function createUser({ firstName, lastName, password, email, contactNumber,
     }
 }
 
-async function getUserByName({ firstName, lastName }) {
+async function getUserByEmail({ email }) {
     try {
         let { rows: [user] } = await client.query(`
         SELECT * FROM users 
-        WHERE firstName=$1 AND lastName=$2
-        RETURNING *;`, [firstName, lastName]);
+        WHERE email=$1
+        RETURNING *;`, [email]);
         if (!user) {
             return null;
         }
+        user = removePassword(user);
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
+async function getUserById(id) {
+    try {
+        let { rows: [user] } = await client.query(`
+        SELECT * FROM users
+        WHERE id=$1
+        RETURNING *;`, [id]);
         user = removePassword(user);
         return user;
     } catch (error) {
@@ -53,9 +65,9 @@ async function getUserById(id) {
     }
 }
 
-async function getUser({ firstName, lastName, password }) {
+async function getUser({ email, password }) {
     try {
-        let user = await getUserByName(firstName, lastName);
+        let user = await getUserByEmail(email);
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (passwordMatch) {
             user = removePassword(user);
@@ -81,6 +93,21 @@ async function getAllUsers() {
     }
 }
 
+async function updateUser(id, { type, contactNumber }) {
+    try {
+        let temp = await getUserById(id);
+        type = type ? type : temp.type;
+        contactNumber = contactNumber ? contactNumber : temp.contactNumber;
+        const { rows: [user] } = await client.query(`
+        UPDATE users
+        SET type=$1 contactNumber=$2
+        WHERE ID=$3
+        RETURNING *;`, [type, contactNumber, id]);
+    } catch (error) {
+        throw error;
+    }
+}
+
 async function deleteUser({ firstName, lastName, email }) {
     try {
         let { rows: [user] } = await client.query(`
@@ -95,9 +122,10 @@ async function deleteUser({ firstName, lastName, email }) {
 
 module.exports = {
     createUser,
-    getUserByName,
+    getUserByEmail,
     getUserById,
     getUser,
     getAllUsers,
+    updateUser,
     deleteUser
 };

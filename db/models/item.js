@@ -36,20 +36,19 @@ async function getItemById(id) {
     }
 }
 
-async function updateItem({ id, name, description, price, amount, category, picture }) {
+async function updateItem({ id, name, description, price, amount, picture }) {
     try {
         const temp = await getItemById(id);
         name = name ? name : temp.name;
         description = description ? description : temp.description;
         price = price ? price : temp.price;
         amount = amount ? amount : temp.amount;
-        category = category ? category : temp.category;
         picture = picture ? picture : temp.picture;
         const { rows: [item] } = await client.query(`
         UPDATE items
-        SET name=$1, description=$2, price=$3, amount=$4,category=$5,picture=$6
-        WHERE id=$7
-        RETURNING *;`, [name, description, price, amount, category, picture, id]);
+        SET name=$1, description=$2, price=$3, amount=$4,picture=$5
+        WHERE id=$6
+        RETURNING *;`, [name, description, price, amount, picture, id]);
         return item;
     } catch (error) {
         throw error;

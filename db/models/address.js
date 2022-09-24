@@ -36,12 +36,12 @@ async function getAddressByUserId(userId) {
     }
 }
 
-async function deleteAddress(addressItemId, userId) {
+async function deleteAddress(id) {
     try {
         const { rows: [address] } = await client.query(`
         DELETE * FROM addresses
-        WHERE "addressItemId"=$1 AND "userId"=$2
-        RETURNING *;`, [addressItemId, userId]);
+        WHERE id=$1
+        RETURNING *;`, [id]);
         return address;
     } catch (error) {
         throw error;

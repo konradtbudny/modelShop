@@ -100,7 +100,7 @@ async function buildTables() {
 
 async function populateInitialData() {
     try {
-        console.log("Populating data...");
+        console.log("\nPopulating data...");
         admin = await createUser({ firstName: "Konrad", lastName: "Budny", password: "obornik1!", email: "kbudny492@gmail.com", contactNumber: "7824982486", type: "admin" });
         const item = await createItem({ name: "1969 Dodge Challenger R/T", description: "An iconic classic car", price: 169.99, amount: 10, category: "Cars", picture: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/1970_Dodge_Challenger_RT_440_Magnum_%2813440447413%29.jpg/280px-1970_Dodge_Challenger_RT_440_Magnum_%2813440447413%29.jpg" });
         const adminAddressItem = await createAddressItem({ street: "8940 E Summerdale St. Apt.4", city: "Chicago", state: "IL", zipCode: "30402", country: "US" });
@@ -108,7 +108,7 @@ async function populateInitialData() {
         const adminOrder = await createOrder(admin.id, adminAddressItem.id);
         const orderItem = await createOrderItem({ orderId: adminOrder.id, itemId: item.id, price: 339.98, quantity: 2 });
         const review = await createReview({ userId: admin.id, itemId: item.id, description: "Great product" });
-        console.log("Finished populating data");
+        console.log("\nFinished populating data");
     } catch (error) {
         throw error;
     }

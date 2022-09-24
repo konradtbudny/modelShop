@@ -23,6 +23,16 @@ async function getReviewById(id) {
         throw error;
     }
 }
+async function getReviewsByItemId(itemId) {
+    try {
+        const { rows: [reviews] } = await client.query(`
+        SELECT * FROM reviews
+        WHERE "itemId"=$1
+        RETURNING *;`, [itemId]);
+    } catch (error) {
+        throw error;
+    }
+}
 
 async function getReviewByUserId(userId) {
     try {
@@ -79,6 +89,7 @@ module.exports = {
     createReview,
     getReviewById,
     getReviewByUserId,
+    getReviewsByItemId,
     getAllReviews,
     updateReview,
     deleteReview
