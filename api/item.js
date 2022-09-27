@@ -65,7 +65,7 @@ itemRouter.patch("/:id/update", requireUser, async (req, res, next) => {
     }
 });
 
-item.patch("/:id", requireUser, async (req, res, next) => {
+itemRouter.patch("/:id", requireUser, async (req, res, next) => {
     let id = req.params.id;
     let { amount } = req.body;
     try {

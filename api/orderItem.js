@@ -17,7 +17,7 @@ orderItemRouter.post("/addOrder", requireUser, async (req, res, next) => {
     }
 });
 
-orderItem.get("/:id", requireUser, async (req, res, next) => {
+orderItemRouter.get("/:id", requireUser, async (req, res, next) => {
     const { id } = req.params;
     try {
         const orderItem = await getOrderItemById(id);
