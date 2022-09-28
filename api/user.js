@@ -52,9 +52,9 @@ userRouter.post("/login", async (req, res, next) => {
     }
 });
 
-userRouter.post("/:id", requireUser, async (req, res, next) => {
+userRouter.post("/me", requireUser, async (req, res, next) => {
     try {
-        const user = await getUserById(req.params.id);
+        const user = await getUserByEmail(req.body.email);
         if (user) {
             res.send(user);
         } else {
