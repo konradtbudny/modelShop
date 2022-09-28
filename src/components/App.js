@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { getAPIHealth } from '../axios-services';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import useAuth from "../hooks/useAuth";
 import '../style/App.css';
+import Home from './Home';
+import Navbar from './Navbar';
 
 const App = () => {
+    const { isLoggedIn, setIsLoggedIn } = useAuth();
     const [APIHealth, setAPIHealth] = useState('');
 
     useEffect(() => {
@@ -15,8 +20,13 @@ const App = () => {
 
     return (
         <div className="app-container">
-            <h1>Hello, World!</h1>
-            <p>API Status: {APIHealth}</p>
+            <Router>
+            <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+                <Routes>
+                    <Route exact path="/" element={<Home APIHealth={APIHealth} />}/>
+                        
+                </Routes>
+            </Router>
         </div>
     );
 };
