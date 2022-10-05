@@ -9,6 +9,9 @@ const Navbar = () => {
         <Link to="/">
             <button>Home</button>
         </Link>
+        <Link to="/user/register">
+            <button>Register</button>
+        </Link>
     </div>)
 }
 export default Navbar;

@@ -12,7 +12,7 @@ if (process.env.CI) {
         port: 5432,
         user: 'postgres',
         password: 'postgres',
-        database: 'postgres',
+        database: 'kondziorek',
         idleTimeoutMillis: 0,
         connectionTimeoutMillis: 0
     });
