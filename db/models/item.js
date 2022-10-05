@@ -28,8 +28,7 @@ async function getItemById(id) {
     try {
         const { rows: [item] } = await client.query(`
         SELECT * FROM items
-        WHERE id=$1
-        RETURNING *;`, [id]);
+        WHERE id=$1;`, [id]);
         return item;
     } catch (error) {
         throw error;
@@ -60,7 +59,7 @@ async function deleteItem(id) {
         const { rows: [item] } = await client.query(`
         DELETE FROM items
         WHERE id=$1
-        RETURNING*;`, [id]);
+        RETURNING *;`, [id]);
     } catch (error) {
         throw error;
     }

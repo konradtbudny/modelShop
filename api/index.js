@@ -9,6 +9,14 @@ const orderItemRouter = require("./orderItem");
 const reviewRouter = require("./review");
 const userRouter = require("./user");
 
+apiRouter.use("/address", addressRouter);
+apiRouter.use("/addressItem", addressItemRouter);
+apiRouter.use("/item", itemRouter);
+apiRouter.use("/order", orderRouter);
+apiRouter.use("/orderItem", orderItemRouter);
+apiRouter.use("/review", reviewRouter);
+apiRouter.use("/user", userRouter);
+
 const jwt = require("jsonwebtoken");
 const { getUserById } = require("../db");
 const { JWT_SECRET } = process.env;
@@ -47,13 +55,6 @@ apiRouter.use((req, res, next) => {
     }
 });
 
-apiRouter.use("/address", addressRouter);
-apiRouter.use("/addressItem", addressItemRouter);
-apiRouter.use("/item", itemRouter);
-apiRouter.use("/order", orderRouter);
-apiRouter.use("/orderItem", orderItemRouter);
-apiRouter.use("/review", reviewRouter);
-apiRouter.use("/user", userRouter);
 
 apiRouter.use((req, res, next) => {
     if (req.statusCode) {

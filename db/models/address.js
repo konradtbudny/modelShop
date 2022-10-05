@@ -16,8 +16,7 @@ async function getAddressById(id) {
     try {
         const { rows: [address] } = await client.query(`
         SELECT * FROM addresses
-        WHERE id=$1
-        RETURNING *;`, [id]);
+        WHERE id=$1;`, [id]);
         return address;
     } catch (error) {
         throw error
@@ -28,8 +27,7 @@ async function getAddressByUserId(userId) {
     try {
         const { rows: [address] } = await client.query(`
         SELECT * FROM addresses
-        WHERE "userId"=$1
-        RETURNING *;`, [userId]);
+        WHERE "userId"=$1;`, [userId]);
         return address;
     } catch (error) {
         throw error

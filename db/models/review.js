@@ -16,8 +16,7 @@ async function getReviewById(id) {
     try {
         const { rows: [review] } = await client.query(`
         SELECT * FROM reviews
-        WHERE id=$1
-        RETURNING *;`, [id]);
+        WHERE id=$1;`, [id]);
         return review;
     } catch (error) {
         throw error;
@@ -27,8 +26,7 @@ async function getReviewsByItemId(itemId) {
     try {
         const { rows: [reviews] } = await client.query(`
         SELECT * FROM reviews
-        WHERE "itemId"=$1
-        RETURNING *;`, [itemId]);
+        WHERE "itemId"=$1;`, [itemId]);
     } catch (error) {
         throw error;
     }
@@ -38,8 +36,7 @@ async function getReviewByUserId(userId) {
     try {
         const { rows: [reviews] } = await client.query(`
         SELECT * FROM reviews
-        WHERE "userId"=$1
-        RETURNING *;`, [userId]);
+        WHERE "userId"=$1;`, [userId]);
         return reviews;
     } catch (error) {
         throw error;
@@ -50,7 +47,7 @@ async function getAllReviews() {
     try {
         const { rows: [reviews] } = await client.query(`
         SELECT * FROM reviews
-        RETURNING*;`);
+        RETURNING *;`);
         return reviews;
     } catch (error) {
         throw error;

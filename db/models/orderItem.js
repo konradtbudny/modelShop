@@ -27,8 +27,7 @@ async function getOrderItemById(id) {
     try {
         const { rows: [orderItem] } = await client.query(`
         SELECT * FROM orderItems
-        WHERE id=$1
-        RETURNING *;`, [id]);
+        WHERE id=$1;`, [id]);
         return orderItem;
     } catch (error) {
         throw error;
@@ -39,8 +38,7 @@ async function getOrderItemsByOrderId(orderId) {
     try {
         const { rows: [orderItem] } = await client.query(`
         SELECT * FROM orderItems
-        WHERE "orderId"=$1
-        RETURNING *;`, [orderId]);
+        WHERE "orderId"=$1;`, [orderId]);
         return orderItem;
     } catch (error) {
         throw error;

@@ -13,7 +13,7 @@ export async function getAPIHealth() {
 
 export async function registerUser(firstName, lastName, password, email, contactNumber) {
   try {
-    const response = await fetch(`${baseURL}/user/register`, {
+    const response = await fetch(`${baseURL}/user/register/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ firstName, lastName, password, email, contactNumber })

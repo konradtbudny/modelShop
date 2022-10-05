@@ -23,12 +23,11 @@ async function createUser({ firstName, lastName, password, email, contactNumber,
     }
 }
 
-async function getUserByEmail({ email }) {
+async function getUserByEmail(email) {
     try {
         let { rows: [user] } = await client.query(`
         SELECT * FROM users 
-        WHERE email=$1
-        RETURNING *;`, [email]);
+        WHERE email=$1;`,[email]);
         if (!user) {
             return null;
         }
@@ -41,23 +40,9 @@ async function getUserByEmail({ email }) {
 
 async function getUserById(id) {
     try {
-        let { rows: [user] } = await client.query(`
-        SELECT * FROM users
-        WHERE id=$1
-        RETURNING *;`, [id]);
-        user = removePassword(user);
-        return user;
-    } catch (error) {
-        throw error;
-    }
-}
-
-async function getUserById(id) {
-    try {
         let { rows: [user] } = await client.query(`'
         SELECT * FROM users 
-        WHERE ID=$1
-        RETURNING *;`, [id]);
+        WHERE ID=$1;`, [id]);
         user = removePassword(user);
         return user;
     } catch (error) {

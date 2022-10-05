@@ -12,16 +12,16 @@ userRouter.use((req, res, next) => {
     next();
 });
 
-userRouter.post("/register", async (req, res, next) => {
+userRouter.post("/register/", async (req, res, next) => {
     const { firstName, lastName, password, email, contactNumber } = req.body;
     try {
         const _user = await getUserByEmail(email);
         if (_user) {
             next({ name: "UserExistsError", message: "An user exists with the given email" });
         } else {
-            const user = createUser({ firstName, lastName, password, email, contactNumber, type: "basic" });
+            const user = await createUser({ firstName, lastName, password, email, contactNumber, type: "basic" });
             if (user) {
-                const token = jet.sign({ id: user.id }, JWT_SECRET, { expiresIn: "15min" });
+                const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "15min" });
                 res.send({ user, message: "you are signed up", token });
             } else {
                 next({ name: "UserCreationError", message: "There was a problem with user registration. Please try again." });

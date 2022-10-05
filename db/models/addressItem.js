@@ -29,8 +29,7 @@ async function getAddressItemById(id) {
     try {
         const { rows: [address] } = await client.query(`
         SELECT * FROM addressItems 
-        WHERE id=$1
-        RETURNING *;`, [id]);
+        WHERE id=$1;`, [id]);
         return address;
     } catch (error) {
         throw error

@@ -19,7 +19,6 @@ const Register = () => {
                 e.preventDefault();
                 if (password === confirmPassword) {
                     const result = await registerUser(firstName, lastName, password, email, contactNumber);
-                    console.log(result)
                     alert("Registered");
                     setIsLoggedIn(true);
                     setToken(result.token);
