@@ -1,17 +1,25 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import { Link } from "react-router-dom";
 
-const Navbar = () => {
-    const { isLoggedIn, setIsLoggedIn } = useAuth();
-    let navigate = useNavigate();
+const Navbar = ({isLoggedIn,setIsLoggedIn}) => {
     return (<div>
         <Link to="/">
             <button>Home</button>
         </Link>
-        <Link to="/user/register">
+        {isLoggedIn?null:(
+            <Link to="/user/register">
             <button>Register</button>
         </Link>
+        )}
+        {isLoggedIn?(<Link to="/" onClick={()=>{localStorage.removeItem("token");
+        setIsLoggedIn(false)}}>
+            <button>Log out</button>
+        </Link>):(
+            <Link to="/user/login">
+            <button>Log in</button>
+        </Link>
+        )}
+        
     </div>)
 }
 export default Navbar;

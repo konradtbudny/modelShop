@@ -21,7 +21,7 @@ userRouter.post("/register/", async (req, res, next) => {
         } else {
             const user = await createUser({ firstName, lastName, password, email, contactNumber, type: "basic" });
             if (user) {
-                const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "15min" });
+                const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "1w" });
                 res.send({ user, message: "you are signed up", token });
             } else {
                 next({ name: "UserCreationError", message: "There was a problem with user registration. Please try again." });
@@ -32,7 +32,7 @@ userRouter.post("/register/", async (req, res, next) => {
     }
 });
 
-userRouter.post("/login", async (req, res, next) => {
+userRouter.post("/login/", async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
         next({ name: "MissingCredentialError", message: "Please Supply both email and password" });
@@ -45,6 +45,7 @@ userRouter.post("/login", async (req, res, next) => {
             res.send({ user, message: "You are logged in", token });
         }
         else {
+            res.send({user});
             next({ name: "IncorrectCredentialsError", message: "Username or password is incorrect" });
         }
     } catch ({ name, message }) {

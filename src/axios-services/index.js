@@ -27,12 +27,13 @@ export async function registerUser(firstName, lastName, password, email, contact
 
 export async function loginUser(email, password) {
   try {
-    const response = await fetch(`${baseURL}/user/login`, {
+    const response = await fetch(`${baseURL}/user/login/`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password })
     });
     const data = await response.json();
+    
     return data;
   } catch (error) {
     throw error;
@@ -46,6 +47,7 @@ export async function getMe(email) {
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.token}` },
       body: JSON.stringify({ email })
     });
+    localStorage.token=data.token;
     const data = response.json();
     return data;
   } catch (error) {

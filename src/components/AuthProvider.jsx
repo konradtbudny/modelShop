@@ -24,13 +24,13 @@ const AuthProvider = ({ children }) => {
         getUser();
     }, [token]);
 
-    useEffect(() => {
-        const fetchItems = async () => {
-            const importedItems = await getItems();
-            setItems(importedItems);
-        };
-        fetchItems();
-    }, []);
+    // useEffect(() => {
+    //     const fetchItems = async () => {
+    //         const importedItems = await getItems();
+    //         setItems(importedItems);
+    //     };
+    //     fetchItems();
+    // }, []);
 
     useEffect(() => {
         const fetchOrders = async () => {

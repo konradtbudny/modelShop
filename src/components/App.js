@@ -6,6 +6,7 @@ import '../style/App.css';
 import Home from './Home';
 import Navbar from './Navbar';
 import Register from './Register';
+import Login from './Login';
 
 const App = () => {
     const { isLoggedIn, setIsLoggedIn } = useAuth();
@@ -26,6 +27,7 @@ const App = () => {
                 <Routes>
                     <Route exact path="/" element={<Home APIHealth={APIHealth} />}/>
                     <Route exact path="/user/register" element={<Register/>}/>
+                    <Route exact path="/user/login" element={<Login isLoggedIn={isLoggedIn}/>}/>
                 </Routes>
         </div>
     );

@@ -31,7 +31,7 @@ async function getUserByEmail(email) {
         if (!user) {
             return null;
         }
-        user = removePassword(user);
+        
         return user;
     } catch (error) {
         throw error;
