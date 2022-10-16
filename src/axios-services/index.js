@@ -19,6 +19,8 @@ export async function registerUser(firstName, lastName, password, email, contact
       body: JSON.stringify({ firstName, lastName, password, email, contactNumber })
     });
     const data = await response.json();
+    localStorage.setItem("token",data.token);
+    localStorage.setItem("email",data.user.email);
     return data;
   } catch (error) {
     throw error;
@@ -33,7 +35,8 @@ export async function loginUser(email, password) {
       body: JSON.stringify({ email, password })
     });
     const data = await response.json();
-    
+    localStorage.setItem("email",data.user.email);
+    localStorage.setItem("token",data.token);
     return data;
   } catch (error) {
     throw error;
@@ -42,12 +45,11 @@ export async function loginUser(email, password) {
 
 export async function getMe(email) {
   try {
-    const response = await fetch(`${baseURL}/user/me`, {
+    const response = await fetch(`${baseURL}/user/me/`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.token}` },
       body: JSON.stringify({ email })
     });
-    localStorage.token=data.token;
     const data = response.json();
     return data;
   } catch (error) {

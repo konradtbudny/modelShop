@@ -1,5 +1,4 @@
 const express = require("express");
-const { emptyQuery } = require("pg-protocol/dist/messages");
 const reviewRouter = express.Router();
 const { createReview, getReviewById, getReviewsByItemId, getAllReviews, deleteReview } = require("../db");
 const { requireUser } = require("./utils");

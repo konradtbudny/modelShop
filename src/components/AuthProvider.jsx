@@ -24,13 +24,13 @@ const AuthProvider = ({ children }) => {
         getUser();
     }, [token]);
 
-    // useEffect(() => {
-    //     const fetchItems = async () => {
-    //         const importedItems = await getItems();
-    //         setItems(importedItems);
-    //     };
-    //     fetchItems();
-    // }, []);
+    useEffect(() => {
+        const fetchItems = async () => {
+            const importedItems = await getItems();
+            setItems(importedItems);
+        };
+        fetchItems();
+    }, []);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -47,6 +47,6 @@ const AuthProvider = ({ children }) => {
         }
         fetchOrders();
     }, [token, isLoggedIn, user]);
-    return (<AuthContext.Provider value={{ user, setUser, token, setToken, isLoggedIn, setIsLoggedIn, items, orders }}>{children}</AuthContext.Provider>);
+    return (<AuthContext.Provider value={{ user, setUser, token, setToken, isLoggedIn, setIsLoggedIn, items, setItems, orders, setOrders }}>{children}</AuthContext.Provider>);
 }
 export default AuthProvider;

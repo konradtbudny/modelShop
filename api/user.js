@@ -42,10 +42,10 @@ userRouter.post("/login/", async (req, res, next) => {
         const comparePassword = await bcrypt.compare(password, user.password);
         if (user && comparePassword) {
             const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+            
             res.send({ user, message: "You are logged in", token });
         }
         else {
-            res.send({user});
             next({ name: "IncorrectCredentialsError", message: "Username or password is incorrect" });
         }
     } catch ({ name, message }) {
@@ -53,7 +53,7 @@ userRouter.post("/login/", async (req, res, next) => {
     }
 });
 
-userRouter.post("/me", requireUser, async (req, res, next) => {
+userRouter.get("/me/", requireUser, async (req, res, next) => {
     try {
         const user = await getUserByEmail(req.body.email);
         if (user) {

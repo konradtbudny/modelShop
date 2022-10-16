@@ -40,9 +40,9 @@ async function getUserByEmail(email) {
 
 async function getUserById(id) {
     try {
-        let { rows: [user] } = await client.query(`'
+        let { rows: [user] } = await client.query(`
         SELECT * FROM users 
-        WHERE ID=$1;`, [id]);
+        WHERE id=$1;`, [id]);
         user = removePassword(user);
         return user;
     } catch (error) {

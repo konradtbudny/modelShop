@@ -7,9 +7,10 @@ import Home from './Home';
 import Navbar from './Navbar';
 import Register from './Register';
 import Login from './Login';
+import Item from './Item';
 
 const App = () => {
-    const { isLoggedIn, setIsLoggedIn } = useAuth();
+    const { isLoggedIn, items,setIsLoggedIn } = useAuth();
     const [APIHealth, setAPIHealth] = useState('');
 
     useEffect(() => {
@@ -22,13 +23,14 @@ const App = () => {
 
     return (
         <div className="app-container">
-            
+
             <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-                <Routes>
-                    <Route exact path="/" element={<Home APIHealth={APIHealth} />}/>
-                    <Route exact path="/user/register" element={<Register/>}/>
-                    <Route exact path="/user/login" element={<Login isLoggedIn={isLoggedIn}/>}/>
-                </Routes>
+            <Routes>
+                <Route exact path="/" element={<Home APIHealth={APIHealth} />} />
+                <Route exact path="/user/register" element={<Register />} />
+                <Route exact path="/user/login" element={<Login isLoggedIn={isLoggedIn} />} />
+                <Route exact path="/items" element={<Item items={items} isLoggedIn={isLoggedIn}/>} />
+            </Routes>
         </div>
     );
 };

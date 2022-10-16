@@ -7,8 +7,8 @@ import AuthProvider from "./components/AuthProvider"
 import './style/index.css';
 
 ReactDOM.render(
-<BrowserRouter>
-<AuthProvider>
-    <App />
-    </AuthProvider>
+    <BrowserRouter>
+        <AuthProvider>
+            <App />
+        </AuthProvider>
     </BrowserRouter>, document.getElementById('root'));
